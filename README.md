@@ -23,10 +23,10 @@ Para instalar o SICREDI-VOTING, siga estas etapas:
 
 ## ☕ Usando SICREDI-VOTING
 
-Para usar, siga estas etapas:
+Para usar, acesse a documetação da api:
 
 ```
-<exemplo_de_uso>
+https://documenter.getpostman.com/view/2815291/2s8YCaHabi
 ```
 
 Adicione comandos de execução e exemplos que você acha que os usuários acharão úteis. Fornece uma referência de opções para pontos de bônus!
