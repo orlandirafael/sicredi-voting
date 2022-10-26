@@ -1,8 +1,9 @@
 version: '3.1'
 
 services:
+
   API:
-    image: 'voting:latest'
+    image: 'sicredi-voting:latest'
     container_name: API
     ports:
       - "8080:8080"
