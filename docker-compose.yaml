@@ -1,0 +1,64 @@
+version: '3.1'
+
+services:
+
+  discovery:
+    image: orlandirafael/sicredi-eureka-server
+    container_name: sicredi-eureka-server
+    build:
+      context: ./sicredi-eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+
+  api-gateway:
+    image: orlandirafael/sicredi-api-gateway
+    container_name: sicredi-api-gateway
+    ports:
+      - "8081:8081"
+    build:
+      context: ./sicredi-api-gateway
+      dockerfile: Dockerfile
+    environment:
+      - EUREKA_SERVER=http://discovery:8761/eureka
+      - VOTING_URL=http://sicredi-voting:8080
+    links:
+      - discovery
+
+  sicredi-voting:
+    image: orlandirafael/sicredi-voting-service
+    restart: always
+    container_name: sicredi-voting-service
+    ports:
+      - "8080:8080"
+    build:
+      context: ./sicredi-voting-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - EUREKA_SERVER=http://discovery:8761/eureka
+    depends_on:
+      discovery:
+        condition: service_started
+      postgresql:
+        condition: service_healthy
+    links:
+      - discovery
+
+  postgresql:
+    container_name: sicredi-voting-postgres
+    image: postgres:13.1-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

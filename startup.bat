@@ -1,0 +1,1 @@
+docker-compose up --scale sicredi-voting-service=4 --force-recreate --build -d

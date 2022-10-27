@@ -1,33 +1,14 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+/sicredi-api-gateway/.classpath
+/sicredi-api-gateway/.project
+/sicredi-api-gateway/target/*
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
+/sicredi-eureka-server/.classpath
+/sicredi-eureka-server/.project
+/sicredi-eureka-server/target/*
+
+/sicredi-voting-service/.classpath
+/sicredi-voting-service/.project
+/sicredi-voting-service/target/*
+
 .settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
+logs
