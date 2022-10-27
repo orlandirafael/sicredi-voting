@@ -2,34 +2,57 @@
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
 
-> Projeto de teste para vaga na empresa SICREDI através da AVENUE-CODE
+> Projeto de Avaliação para vaga SICREDI através da AVENUE-CODE
 
 ## 💻 Pré-requisitos
 
 Para executar você vai precisar dos seguintes requisitos:
 * Docker / Docker-Compose configurados e instalados
-* Ferramenta de transferência de dados como o cUrl para testar as API's REST
+* Java na versão 11 configurado
+* Ferramenta cUrl ou semelhate para teste das API's REST
 
-## 🚀 Instalando SICREDI-VOTING
+## 🏡 Descrição da arquitetura
 
-Para instalar o SICREDI-VOTING, siga estas etapas:
+O sistema é composto de quatro módulos:
 
-1. abre o terminal de sua preferência
-2. confirme que a porta 8080 não esteja sendo utilizada por nenhuma outra aplicação
-3. entre na árvore de diretórios ./sicredi-voting/src/main/docker/
-4. execute o comando docker-compose up de dentro do diretório acima
-5. aguarde a conclusão
+sicredi-api-gateway - Api gateway baseado em Zuul para permitir e facilitar a escalabilidade
+sicredi-eureka-server - Service discovery baseado no Eureka para funcionar como proxy reverso
+sicredi-resultmq-service - Serviço simples para desenfileirar mensagens do rabbitmq como teste. Não deverá ser executado se outro serviço de integração estiver disponível 
+sicredi-voting-service - Serviço principal que é utilizado para criar pautas, abrir sessões e realizar votos. 
+	Todas os endpoits recebem um objeto json com os parâmetros de cada entidade.
+	Os endpoints disponibilizados foram:
+	POST http://localhost:8888/voting/pauta/v1 - Cadastra uma nova pauta com titulo e descricao
+	POST http://localhost:8888/voting/sessao/v1 - Abre uma nova sessão de votação com o tempo de duração definido
+	POST http://localhost:8888/voting/voto/v1 - Realiza um voto em um sessão criada recebendo o cpf e o id do associado
+	
+Para exemplos, acesse a documentação do postman abaixo:
+https://documenter.getpostman.com/view/2815291/2s8YCaHabi
+	
+A aplicação utiliza um banco postgres e um servidor rabbitmq.
 
+## 🧩 Solução
+
+O sistema foi definido com as entidades persistidas: Pauta, Sessao e Voto.
+<img src="sistema.png" alt="sistema">
+Os votos são sempre realizados em uma sessão relacionada a uma pauta. 
+O sistema executa uma tarefa com periodicidade de 30 em 30 segundos para fechar as sesões encerradas.
+Ao encerrar a sessão, enfieliera uma mensagem no servidor RabbitMQ com o resultado da votação.
+
+
+## 🚀 Excução do ambiente
+
+Na pasta raiz de cada módulo, disponibilizei um script 'build'.
+Esse script deverá ser executado pelo menos uma vez para gerar o arquivo .jar e a imagem docker necessária para a execução.
+
+Após o build dos módulos, já é possível iniciar o projeto pelo script 'startup' na raiz do projeto. 
 
 ## ☕ Usando SICREDI-VOTING
 
-Para usar, acesse a documetação da api:
+Para usar o sistema, você deverá:
 
-```
-https://documenter.getpostman.com/view/2815291/2s8YCaHabi
-```
-
-Adicione comandos de execução e exemplos que você acha que os usuários acharão úteis. Fornece uma referência de opções para pontos de bônus!
+- Cadastrar uma nova pauta, informando o título e a descrição. (localhost:8888/voting/pauta/v1)
+- Abrir uma nova sesão de votação, informando o id da pauta cadastrada anteriormente e o tempo de duração da sessão. (localhost:8888/voting/sessao/v1)
+- Realizar um voto, informando a escolha (Sim/Não), o idAssociado e o cpf. (localhost:8888/voting/voto/v1)
 
 
 [⬆ Voltar ao topo](#nome-do-projeto)<br>
