@@ -27,6 +27,11 @@ public class SessaoService {
 
   @Autowired ResultadoVotacaoSender sender;
 
+  /**
+   * Método responsável pelo fechamento das sesões de votação De 30 em 30 segundos ele é executado
+   * buscando sessões não encerradas com tempo de encerramento ultrapassado Ao efetuar o fechamento,
+   * envia uma mensagem no servidor rabbitMQ
+   */
   @Scheduled(fixedDelay = 30000)
   public void analisaSessoes() {
     final List<Sessao> sessoes = repository.recuperaSessoesEncerradas();

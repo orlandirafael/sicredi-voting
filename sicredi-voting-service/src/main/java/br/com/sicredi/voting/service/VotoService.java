@@ -46,9 +46,11 @@ public class VotoService {
     final String escolha = votoDto.getEscolha().toUpperCase();
     final String cpfAssociado = votoDto.getCpf().replaceAll("\\D+", "");
 
+    // Valida se o usuário informou SIM ou NÃO (Non case-sensitive)
     if (!escolha.equals(SIM) && !escolha.equals(NAO))
       throw new OpcaoInvalidaVotoException("Opção de voto inválida: " + votoDto.getEscolha());
 
+    // Valida se o CPF está correto e apto a votar (uri configurável no application.properties)
     RetornoValidacaoCpfDTO validacao =
         new RestTemplate()
             .getForObject(new URI(uriValidacaoCpf + cpfAssociado), RetornoValidacaoCpfDTO.class);
@@ -61,6 +63,8 @@ public class VotoService {
     final Optional<Sessao> sessaoOpt = sessaoRepository.findById(votoDto.getIdSessao());
     if (sessaoOpt.isPresent()) {
       final Sessao sessao = sessaoOpt.get();
+
+      // Se a sessão já encerrou, não permite votar
       if (sessaoOpt.get().getHoraEncerramento().isBefore(LocalDateTime.now())) {
         throw new SessaoEncerradaException("A sessão já foi encerrada! Não é possível votar mais.");
       }
