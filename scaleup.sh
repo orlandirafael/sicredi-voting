@@ -1,1 +1,1 @@
-docker-compose up --scale sicredi-voting=2 -d
+docker-compose up --scale sicredi-voting=4 -d
