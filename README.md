@@ -33,7 +33,10 @@ A aplicação utiliza um banco postgres e um servidor rabbitmq.
 ## 🧩 Solução
 
 O sistema foi definido com as entidades persistidas: Pauta, Sessao e Voto.
+
+
 <img src="sistema.png" alt="sistema">
+
 Os votos são sempre realizados em uma sessão relacionada a uma pauta. 
 O sistema executa uma tarefa com periodicidade de 30 em 30 segundos para fechar as sesões encerradas.
 Ao encerrar a sessão, enfieliera uma mensagem no servidor RabbitMQ com o resultado da votação.
