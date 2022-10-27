@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.sicredi.voting.dto.ResultadoVotacaoDTO;
 import br.com.sicredi.voting.dto.SessaoDTO;
+import br.com.sicredi.voting.messaging.ResultadoVotacaoSender;
 import br.com.sicredi.voting.model.Pauta;
 import br.com.sicredi.voting.model.Sessao;
 import br.com.sicredi.voting.repository.SessaoRepository;
@@ -24,6 +25,8 @@ public class SessaoService {
 
   @Autowired VotoService votoService;
 
+  @Autowired ResultadoVotacaoSender sender;
+
   @Scheduled(fixedDelay = 30000)
   public void analisaSessoes() {
     final List<Sessao> sessoes = repository.recuperaSessoesEncerradas();
@@ -34,11 +37,7 @@ public class SessaoService {
             sessao.setEncerrada(true);
             repository.save(sessao);
             final ResultadoVotacaoDTO resultadoVotacao = votoService.obterResultadoVotacao(sessao);
-            log.info(
-                "Resultado da votação da sessão para decisão da pauta "
-                    + resultadoVotacao.getPauta());
-            log.info("Total de votos SIM: " + resultadoVotacao.getVotosSim());
-            log.info("Total de votos NÃO: " + resultadoVotacao.getVotosNao());
+            sender.send(resultadoVotacao);
           });
     }
   }

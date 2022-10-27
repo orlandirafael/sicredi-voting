@@ -10,5 +10,9 @@
 /sicredi-voting-service/.project
 /sicredi-voting-service/target/*
 
+/sicredi-resultmq-service/.classpath
+/sicredi-resultmq-service/.project
+/sicredi-resultmq-service/target/*
+
 .settings
 logs

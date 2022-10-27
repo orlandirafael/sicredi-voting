@@ -7,7 +7,8 @@ services:
     container_name: sicredi-eureka-server
     build:
       context: ./sicredi-eureka-server
-      dockerfile: Dockerfile
+      args:
+        JAR_FILE: target/sicredi-eureka-server-${DISCOVERY_VERSION}.jar
     ports:
       - "8761:8761"
 
@@ -15,10 +16,11 @@ services:
     image: orlandirafael/sicredi-api-gateway
     container_name: sicredi-api-gateway
     ports:
-      - "8081:8081"
+      - "8888:8888"
     build:
       context: ./sicredi-api-gateway
-      dockerfile: Dockerfile
+      args:
+        JAR_FILE: target/sicredi-api-gateway-${GATEWAY_VERSION}.jar
     environment:
       - EUREKA_SERVER=http://discovery:8761/eureka
       - VOTING_URL=http://sicredi-voting:8080
@@ -28,12 +30,10 @@ services:
   sicredi-voting:
     image: orlandirafael/sicredi-voting-service
     restart: always
-    container_name: sicredi-voting-service
-    ports:
-      - "8080:8080"
     build:
       context: ./sicredi-voting-service
-      dockerfile: Dockerfile
+      args:
+        JAR_FILE: target/sicredi-voting-service-${VOTING_VERSION}.jar
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -47,6 +47,7 @@ services:
         condition: service_healthy
     links:
       - discovery
+      - rabbitmq
 
   postgresql:
     container_name: sicredi-voting-postgres
@@ -57,8 +58,27 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_DB=postgres
+      - TZ='America/Sao_Paulo'
+      - PGTZ='GMT-3'
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  resultmq:
+    container_name: sicredi-resultmq-service
+    image: orlandirafael/sicredi-resultmq-service
+    restart: always
+    build:
+      context: ./sicredi-resultmq-service
+      args:
+        JAR_FILE: target/sicredi-resultmq-service-${VOTING_VERSION}.jar
+    links:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"

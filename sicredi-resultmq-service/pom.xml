@@ -10,10 +10,10 @@
 	</parent>
 
 	<groupId>br.com.sicredi</groupId>
-	<artifactId>sicredi-voting-service</artifactId>
+	<artifactId>sicredi-resultmq-service</artifactId>
 	<version>1.0.0</version>
-	<name>sicredi-voting-service</name>
-	<description>Assesment project for Sicredi by Avenue Code</description>
+	<name>sicredi-resultmq-service</name>
+	<description>project for read result queue by Avenue Code</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -34,10 +34,6 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-amqp</artifactId>
 		</dependency>
@@ -49,10 +45,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

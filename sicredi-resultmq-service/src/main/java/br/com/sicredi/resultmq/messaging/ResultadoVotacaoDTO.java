@@ -1,4 +1,4 @@
-package br.com.sicredi.voting.dto;
+package br.com.sicredi.resultmq.messaging;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
