@@ -1,12 +1,13 @@
 package br.com.sicredi.voting.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.sicredi.voting.model.Pauta;
+import br.com.sicredi.voting.dto.PautaDTO;
 import br.com.sicredi.voting.service.PautaService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,9 +19,9 @@ public class PautaController {
   @Autowired PautaService service;
 
   @PostMapping
-  public Pauta novaPauta(@RequestBody final Pauta pauta) {
-    final Pauta pautaCriada = service.novaPauta(pauta);
+  public ResponseEntity<PautaDTO> novaPauta(@RequestBody final PautaDTO pautaDto) {
+    final PautaDTO pautaCriada = service.novaPauta(pautaDto);
     log.info("Pauta criada com id {}", pautaCriada.getId());
-    return pautaCriada;
+    return ResponseEntity.ok(pautaCriada);
   }
 }

@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.client.RestClientException;
 
+import br.com.sicredi.voting.dto.PautaDTO;
 import br.com.sicredi.voting.dto.SessaoDTO;
 import br.com.sicredi.voting.dto.VotoDTO;
 import br.com.sicredi.voting.exception.OpcaoInvalidaVotoException;
-import br.com.sicredi.voting.model.Pauta;
 import br.com.sicredi.voting.service.PautaService;
 import br.com.sicredi.voting.service.SessaoService;
 import br.com.sicredi.voting.service.VotoService;
@@ -25,9 +25,9 @@ class VotingApplicationTests {
 
   @Test
   void criaNovaPauta() {
-    final Pauta pauta = new Pauta();
-    pauta.setDescricao("Pauta de teste");
-    Pauta retorno = pautaService.novaPauta(pauta);
+    final PautaDTO pautaDto = new PautaDTO();
+    pautaDto.setDescricao("Pauta de teste");
+    PautaDTO retorno = pautaService.novaPauta(pautaDto);
     assertNotNull(retorno);
     assertNotNull(retorno.getId());
   }

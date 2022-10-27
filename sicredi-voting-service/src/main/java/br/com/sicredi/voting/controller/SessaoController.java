@@ -1,6 +1,7 @@
 package br.com.sicredi.voting.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,9 @@ public class SessaoController {
   @Autowired SessaoService service;
 
   @PostMapping
-  public SessaoDTO abrirSessao(@RequestBody final SessaoDTO sessaoDto) {
+  public ResponseEntity<SessaoDTO> abrirSessao(@RequestBody final SessaoDTO sessaoDto) {
     final SessaoDTO sessaoCriada = service.abrirSessao(sessaoDto);
     log.info("Sessao aberta com id {}", sessaoCriada.getId());
-    return sessaoCriada;
+    return ResponseEntity.ok(sessaoCriada);
   }
 }

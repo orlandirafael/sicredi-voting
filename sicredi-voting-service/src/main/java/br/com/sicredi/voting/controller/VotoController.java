@@ -3,6 +3,7 @@ package br.com.sicredi.voting.controller;
 import java.net.URISyntaxException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +23,10 @@ public class VotoController {
   @Autowired VotoService service;
 
   @PostMapping
-  public VotoDTO realizarVoto(@RequestBody final VotoDTO voto)
+  public ResponseEntity<VotoDTO> realizarVoto(@RequestBody final VotoDTO voto)
       throws RestClientException, OpcaoInvalidaVotoException, URISyntaxException {
     final VotoDTO votoRealizado = service.realizarVoto(voto);
     log.info("Voto realizado com id {}", votoRealizado.getId());
-    return votoRealizado;
+    return ResponseEntity.ok(votoRealizado);
   }
 }
