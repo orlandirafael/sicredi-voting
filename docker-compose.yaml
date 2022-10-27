@@ -73,7 +73,7 @@ services:
     build:
       context: ./sicredi-resultmq-service
       args:
-        JAR_FILE: target/sicredi-resultmq-service-${VOTING_VERSION}.jar
+        JAR_FILE: target/sicredi-resultmq-service-${RESULTMQ_VERSION}.jar
     links:
       - rabbitmq
 

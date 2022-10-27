@@ -46,21 +46,23 @@ public class VotoService {
     final String escolha = votoDto.getEscolha().toUpperCase();
     final String cpfAssociado = votoDto.getCpf().replaceAll("\\D+", "");
 
-    if (!escolha.equals(SIM) && !escolha.equals(NAO)) throw new OpcaoInvalidaVotoException();
+    if (!escolha.equals(SIM) && !escolha.equals(NAO))
+      throw new OpcaoInvalidaVotoException("Opção de voto inválida: " + votoDto.getEscolha());
 
     RetornoValidacaoCpfDTO validacao =
         new RestTemplate()
             .getForObject(new URI(uriValidacaoCpf + cpfAssociado), RetornoValidacaoCpfDTO.class);
 
     if (validacao.getStatus().equals(UNABLE_TO_VOTE)) {
-      throw new VotoAssociadoNaoAutorizadoException();
+      throw new VotoAssociadoNaoAutorizadoException(
+          "O cpf do associado não está válido para votar");
     }
 
     final Optional<Sessao> sessaoOpt = sessaoRepository.findById(votoDto.getIdSessao());
     if (sessaoOpt.isPresent()) {
       final Sessao sessao = sessaoOpt.get();
       if (sessaoOpt.get().getHoraEncerramento().isBefore(LocalDateTime.now())) {
-        throw new SessaoEncerradaException();
+        throw new SessaoEncerradaException("A sessão já foi encerrada! Não é possível votar mais.");
       }
       final Voto voto = new Voto();
       voto.setEscolha(escolha.equals(SIM));
@@ -71,10 +73,10 @@ public class VotoService {
         votoDto.setId(savedVoto.getId());
         return votoDto;
       } catch (DataIntegrityViolationException e) {
-        throw new VotoRealizadoException();
+        throw new VotoRealizadoException("Já foi registrado um voto para esse associado");
       }
     } else {
-      throw new SessaoInvalidaException();
+      throw new SessaoInvalidaException("Sessão inválida passada como parâmetro");
     }
   }
 
