@@ -38,6 +38,11 @@ https://documenter.getpostman.com/view/2815291/2s8YCaHabi
 	
 A aplicação utiliza um banco postgres e um servidor rabbitmq.
 
+O versionamento das api's foi definido como sendo da seguinte forma:
+
+http://ip:porta/api/modulo/v1/* (onde v1 é a versão inicial e qualquer modificação estrutural entraria como v2).
+
+
 ## 🧩 Solução
 
 O sistema foi definido com as entidades persistidas: Pauta, Sessao e Voto.
@@ -56,6 +61,8 @@ Na pasta raiz de cada módulo, disponibilizei um script 'build'.
 Esse script deverá ser executado pelo menos uma vez para gerar o arquivo .jar e a imagem docker necessária para a execução.
 
 Após o build dos módulos, já é possível iniciar o projeto pelo script 'startup' na raiz do projeto. 
+
+Para testes em um ambiente que necessite uma alta demanda de requisições, disponibilizei o script `scaleup` que sobe 4 instancias do serviço de votação para atender uma maior demanda. Em um ambiente configurado com kubernetes, isso seria automatizado mais facilmente, mas evitei a fim da simplicidade estrutural. 
 
 ## ☕ Usando SICREDI-VOTING
 
