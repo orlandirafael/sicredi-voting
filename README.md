@@ -15,14 +15,22 @@ Para executar você vai precisar dos seguintes requisitos:
 
 O sistema é composto de quatro módulos:
 
-sicredi-api-gateway - Api gateway baseado em Zuul para permitir e facilitar a escalabilidade
-sicredi-eureka-server - Service discovery baseado no Eureka para funcionar como proxy reverso
-sicredi-resultmq-service - Serviço simples para desenfileirar mensagens do rabbitmq como teste. Não deverá ser executado se outro serviço de integração estiver disponível 
-sicredi-voting-service - Serviço principal que é utilizado para criar pautas, abrir sessões e realizar votos. 
+`sicredi-api-gateway` - Api gateway baseado em Zuul para permitir e facilitar a escalabilidade
+
+`sicredi-eureka-server` - Service discovery baseado no Eureka para funcionar como proxy reverso
+
+`sicredi-resultmq-service` - Serviço simples para desenfileirar mensagens do rabbitmq como teste. Não deverá ser executado se outro serviço de integração estiver disponível 
+
+`sicredi-voting-service` - Serviço principal que é utilizado para criar pautas, abrir sessões e realizar votos. 
+
+
 	Todas os endpoits recebem um objeto json com os parâmetros de cada entidade.
 	Os endpoints disponibilizados foram:
+	
 	POST http://localhost:8888/voting/pauta/v1 - Cadastra uma nova pauta com titulo e descricao
+	
 	POST http://localhost:8888/voting/sessao/v1 - Abre uma nova sessão de votação com o tempo de duração definido
+	
 	POST http://localhost:8888/voting/voto/v1 - Realiza um voto em um sessão criada recebendo o cpf e o id do associado
 	
 Para exemplos, acesse a documentação do postman abaixo:
@@ -58,4 +66,4 @@ Para usar o sistema, você deverá:
 - Realizar um voto, informando a escolha (Sim/Não), o idAssociado e o cpf. (localhost:8888/voting/voto/v1)
 
 
-[⬆ Voltar ao topo](#nome-do-projeto)<br>
+[⬆ Voltar ao topo](#sicredi-voting)<br>
